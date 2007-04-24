@@ -46,6 +46,7 @@ BuildRequires:	rootcerts
 BuildRequires: cmake
 BuildRequires:	libgcrypt-devel
 BuildRequires:	libsasl-devel
+BuildRequires:	nss-devel
 
 %description
 The QCA library provides an easy API for a range of cryptographic

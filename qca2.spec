@@ -4,7 +4,7 @@
 %define build_sys_rootcerts 1
 %{?_without_sys_rootcerts: %{expand: %%global build_sys_rootcerts 0}}
 
-%define branch_date 20070109
+%define branch_date 20070424
 
 %define name_orig	qca
 %define qtdir		%{_prefix}/lib/qt4
@@ -17,7 +17,7 @@
 
 Name:		qca2
 Version:	2.0
-Release:	%mkrel 0.beta2.7
+Release:	%mkrel 0.beta2.8
 License:	LGPL
 Summary:	Straightforward and cross-platform crypto API for Qt
 Group:		System/Libraries
@@ -223,6 +223,42 @@ utilize the Qt Cryptographic Architecture (QCA).
 %defattr(0644,root,root,0755)
 %attr(0755,root,root)
 %{qtdir}/plugins/%{_lib}/crypto/libqca-gcrypt.so
+
+
+%package -n %{lib_name}-plugin-logger
+Summary: logger plugin for QCA
+Group: Development/KDE and Qt
+Requires: %{lib_name} >= 2.0
+BuildRequires: openssl-devel
+Provides: qca2-plugin-gcrypt
+
+%description -n %{lib_name}-plugin-logger
+This is a plugin to provide gcrypt capability to programs that
+utilize the Qt Cryptographic Architecture (QCA).
+
+%files -n %{lib_name}-plugin-logger
+%defattr(0644,root,root,0755)
+%attr(0755,root,root)
+%{qtdir}/plugins/%{_lib}/crypto/libqca-logger.so
+
+
+
+%package -n %{lib_name}-plugin-nss
+Summary: nss plugin for QCA
+Group: Development/KDE and Qt
+Requires: %{lib_name} >= 2.0
+BuildRequires: openssl-devel
+Provides: qca2-plugin-gcrypt
+
+%description -n %{lib_name}-plugin-nss
+This is a plugin to provide gcrypt capability to programs that
+utilize the Qt Cryptographic Architecture (QCA).
+
+%files -n %{lib_name}-plugin-nss
+%defattr(0644,root,root,0755)
+%attr(0755,root,root)
+%{qtdir}/plugins/%{_lib}/crypto/libqca-nss.so
+
 
 #------------------------------------------------------------------------------
 

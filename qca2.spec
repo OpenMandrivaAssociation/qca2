@@ -12,12 +12,12 @@
 %define qtcryptodir	%{qtdir}/plugins/%{_lib}/crypto
 %define lib_major	2
 %define lib_name	%mklibname %{name_orig} %{lib_major}
-%define source_ver	%{version}-%branch_date
+%define source_ver	%{version}-beta6
 %define build_pkcs11    0
 
 Name:		qca2
-Version:	2.0
-Release:	%mkrel 0.beta2.8
+Version:	2.0.0
+Release:	%mkrel 0.beta6.1
 License:	LGPL
 Summary:	Straightforward and cross-platform crypto API for Qt
 Group:		System/Libraries
@@ -35,6 +35,7 @@ Patch0:		%{name_orig}-2.0-beta2-config-release.patch
 Patch1:		%{name_orig}-2.0-beta2-config-debug.patch
 # Patch2 allows one to force QCA to use the bundled certs.
 Patch2:		%{name_orig}-2.0-beta2-certs-bundled.patch
+Patch3:		%{name_orig}-2.0.0-beta6-fixbuild.patch
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 Requires:	%{lib_name} = %{version}-%{release}
 # Only Qt 4.1 is really needed, but older Qt RPMs had a different
@@ -135,134 +136,7 @@ Development files for QCA.
 %{qtdir}/%{_lib}/libqca.so
 #%{qtdir}/mkspecs/features/crypto.prf
 
-
-%package -n %{lib_name}-plugin-gnupg
-Summary: GnuPG plugin for QCA
-Group: Development/KDE and Qt
-Requires: %{lib_name} >= 2.0
-Requires: gnupg
-Provides: qca2-plugin-gnupg
-Obsoletes:	qca2-plugin-gnupg-%{_lib}
-
-
-%description -n %{lib_name}-plugin-gnupg
-This is a plugin to provide GnuPG capability to programs that
-utilize the Qt Cryptographic Architecture (QCA).
-
-%files -n %{lib_name}-plugin-gnupg
-%defattr(0644,root,root,0755)
-%attr(0755,root,root) %{qtdir}/plugins/%{_lib}/crypto/libqca-gnupg.so
-
 #------------------------------------------------------------------------------
-
-%package -n %{lib_name}-plugin-openssl
-Summary:       OpenSSL plugin for QCA
-Group:         Development/KDE and Qt
-Requires: %{lib_name} >= 2.0
-BuildRequires: openssl-devel
-Provides: qca2-plugin-openssl
-Obsoletes:  qca2-plugin-openssl-%{_lib}
-
-%description -n %{lib_name}-plugin-openssl
-This is a plugin to provide OpenSSL capability to programs that
-utilize the Qt Cryptographic Architecture (QCA).
-
-%files -n %{lib_name}-plugin-openssl
-%defattr(0644,root,root,0755)
-%attr(0755,root,root) %{qtdir}/plugins/%{_lib}/crypto/libqca-openssl.so
-
-#------------------------------------------------------------------------------
-%if %build_pkcs11
-%package -n %{lib_name}-plugin-pkcs11
-Summary: PKCS11 plugin for QCA
-Group: Development/KDE and Qt
-Requires: %{lib_name} >= 2.0
-BuildRequires: openssl-devel
-Provides: qca2-plugin-pkcs11
-Obsoletes:	qca2-plugin-pkcs11-%{_lib}
-
-%description -n %{lib_name}-plugin-pkcs11
-This is a plugin to provide PKCS11 capability to programs that
-utilize the Qt Cryptographic Architecture (QCA).
-
-%files -n %{lib_name}-plugin-pkcs11
-%defattr(0644,root,root,0755)
-%attr(0755,root,root) 
-%{qtdir}/plugins/%{_lib}/crypto/libqca-pkcs11.so
-%endif
-
-
-%package -n %{lib_name}-plugin-cyrus-sasl
-Summary: cyrus-sasl plugin for QCA
-Group: Development/KDE and Qt
-Requires: %{lib_name} >= 2.0
-BuildRequires: openssl-devel
-Provides: qca2-plugin-cyrus-sasl
-
-%description -n %{lib_name}-plugin-cyrus-sasl
-This is a plugin to provide cyrus-sasl capability to programs that
-utilize the Qt Cryptographic Architecture (QCA).
-
-%files -n %{lib_name}-plugin-cyrus-sasl
-%defattr(0644,root,root,0755)
-%attr(0755,root,root)
-%{qtdir}/plugins/%{_lib}/crypto/libqca-cyrus-sasl.so
-
-
-%package -n %{lib_name}-plugin-gcrypt
-Summary: gcrypt plugin for QCA
-Group: Development/KDE and Qt
-Requires: %{lib_name} >= 2.0
-BuildRequires: openssl-devel
-Provides: qca2-plugin-gcrypt
-
-%description -n %{lib_name}-plugin-gcrypt
-This is a plugin to provide gcrypt capability to programs that
-utilize the Qt Cryptographic Architecture (QCA).
-
-%files -n %{lib_name}-plugin-gcrypt
-%defattr(0644,root,root,0755)
-%attr(0755,root,root)
-%{qtdir}/plugins/%{_lib}/crypto/libqca-gcrypt.so
-
-
-%package -n %{lib_name}-plugin-logger
-Summary: logger plugin for QCA
-Group: Development/KDE and Qt
-Requires: %{lib_name} >= 2.0
-BuildRequires: openssl-devel
-Provides: qca2-plugin-gcrypt
-
-%description -n %{lib_name}-plugin-logger
-This is a plugin to provide gcrypt capability to programs that
-utilize the Qt Cryptographic Architecture (QCA).
-
-%files -n %{lib_name}-plugin-logger
-%defattr(0644,root,root,0755)
-%attr(0755,root,root)
-%{qtdir}/plugins/%{_lib}/crypto/libqca-logger.so
-
-
-
-%package -n %{lib_name}-plugin-nss
-Summary: nss plugin for QCA
-Group: Development/KDE and Qt
-Requires: %{lib_name} >= 2.0
-BuildRequires: openssl-devel
-Provides: qca2-plugin-gcrypt
-
-%description -n %{lib_name}-plugin-nss
-This is a plugin to provide gcrypt capability to programs that
-utilize the Qt Cryptographic Architecture (QCA).
-
-%files -n %{lib_name}-plugin-nss
-%defattr(0644,root,root,0755)
-%attr(0755,root,root)
-%{qtdir}/plugins/%{_lib}/crypto/libqca-nss.so
-
-
-#------------------------------------------------------------------------------
-
 %prep
 %setup -q -n %{name_orig}-%{source_ver}
 #%if %{build_debug}
@@ -271,7 +145,7 @@ utilize the Qt Cryptographic Architecture (QCA).
 #%patch0 -p1 -b .releasepatch
 #%endif
 #%patch2 -p1 -b .certstorepathfix
-
+%patch3 -p0
 
 %build
 cd $RPM_BUILD_DIR/%{name_orig}-%{source_ver}

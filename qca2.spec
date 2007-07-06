@@ -7,47 +7,31 @@
 %define branch_date 20070424
 
 %define name_orig	qca
-%define qtdir		%{_prefix}/lib/qt4
-%define libqtcore4	%mklibname qtcore 4
-%define qtcryptodir	%{qtdir}/plugins/%{_lib}/crypto
+%define qtcryptodir	%{qt4plugins}/crypto
 %define lib_major	2
 %define lib_name	%mklibname %{name_orig} %{lib_major}
-%define source_ver	%{version}-beta6
+%define source_ver	%{version}-beta7
 %define build_pkcs11    0
 
-Name:		qca2
-Version:	2.0.0
-Release:	%mkrel 0.beta6.1
-License:	LGPL
-Summary:	Straightforward and cross-platform crypto API for Qt
-Group:		System/Libraries
-URL:		http://delta.affinix.com/qca
-########################################################################################
-#it is now part of kde : You can find it here:  http://webcvs.kde.org//kdesupport/qca/ #
-########################################################################################
-Source0:	http://delta.affinix.com/download/qca/%{version}/beta2/%{name_orig}-%{source_ver}.tar.bz2
-# Patch0 should not be necessary, but Qt 4 in Cooker currently builds everything as
-# debug, regardless that the documentation says that it should build as release. This
-# breaks QCA's build.
-Patch0:		%{name_orig}-2.0-beta2-config-release.patch
-# I don't know if Patch1 is necessary for when Qt 4 in Cooker is fixed. Just in case
-# it is needed, I'm leaving it here (it can't hurt). (This patch is the opposite of 0.)
-Patch1:		%{name_orig}-2.0-beta2-config-debug.patch
-# Patch2 allows one to force QCA to use the bundled certs.
-Patch2:		%{name_orig}-2.0-beta2-certs-bundled.patch
-Patch3:		%{name_orig}-2.0.0-beta6-fixbuild.patch
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
-Requires:	%{lib_name} = %{version}-%{release}
-# Only Qt 4.1 is really needed, but older Qt RPMs had a different
-# directory structure, so require a newer Qt RPM
-BuildRequires:	qt4-devel >= 2:4.2
+Name: qca2
+Version: 2.0.0
+Release: %mkrel 0.beta7.1
+License: LGPL
+Summary: Straightforward and cross-platform crypto API for Qt
+Group: System/Libraries
+URL: http://delta.affinix.com/qca
+Source0: http://delta.affinix.com/download/qca/%{version}/beta7/%{name_orig}-%{source_ver}.tar.bz2
+Patch0:	%{name_orig}-2.0.0-beta6-fixbuild.patch
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
+BuildRequires: qt4-devel >= 2:4.2
 %if %{build_sys_rootcerts}
-BuildRequires:	rootcerts
+BuildRequires: rootcerts
 %endif
 BuildRequires: cmake
-BuildRequires:	libgcrypt-devel
-BuildRequires:	libsasl-devel
-BuildRequires:	nss-devel
+BuildRequires: libgcrypt-devel
+BuildRequires: libsasl-devel
+BuildRequires: nss-devel
+Requires: qt4-common >= 4.3
 
 %description
 The QCA library provides an easy API for a range of cryptographic
@@ -65,8 +49,8 @@ regulation.
 %defattr(0644,root,root,0755)
 %doc README COPYING INSTALL TODO
 %defattr(0755,root,root,0755)
-%{qtdir}/bin/qcatool
-%{_bindir}/qca2tool
+%{qt4dir}/bin/qcatool
+%_bindir/qcatool
 
 #------------------------------------------------------------------------------
 
@@ -82,10 +66,10 @@ These certificates are the same ones that are included in Mozilla.
 
 %files -n %{name}-root-certificates
 %defattr(0644,root,root,0755)
-%dir %{qtdir}/share/qca
-%dir %{qtdir}/share/qca/certs
-%doc %{qtdir}/share/qca/certs/README
-%{qtdir}/share/qca/certs/rootcerts.pem
+%dir %{qt4dir}/share/qca
+%dir %{qt4dir}/share/qca/certs
+%doc %{qt4dir}/share/qca/certs/README
+%{qt4dir}/share/qca/certs/rootcerts.pem
 %endif
 
 #------------------------------------------------------------------------------
@@ -93,8 +77,6 @@ These certificates are the same ones that are included in Mozilla.
 %package	-n %{lib_name}
 Summary:	Libraries for QCA
 Group:		System/Libraries
-# Older Qt RPMs had a different directory structure, so require a newer Qt RPM
-Requires:	%{libqtcore4} >= 2:4.1.1
 %if %{build_sys_rootcerts}
 Requires:	rootcerts
 Obsoletes:	%{name}-root-certificates
@@ -114,7 +96,7 @@ Libraries for QCA.
 %doc README COPYING INSTALL TODO
 %dir %{qtcryptodir}
 %defattr(0755,root,root,0755)
-%{qtdir}/%{_lib}/libqca.so.*
+%{qt4lib}/libqca.so.*
 
 #------------------------------------------------------------------------------
 
@@ -130,41 +112,24 @@ Development files for QCA.
 %files	-n %{lib_name}-devel
 %defattr(0644,root,root,0755)
 %{_libdir}/pkgconfig/qca.pc
-%dir %{qtdir}/include/QtCrypto
-%{qtdir}/include/QtCrypto/*.h
-%{qtdir}/include/QtCrypto/QtCrypto
-%{qtdir}/%{_lib}/libqca.so
-#%{qtdir}/mkspecs/features/crypto.prf
+%dir %{qt4include}/QtCrypto
+%{qt4include}/QtCrypto/*
+%{qt4lib}/libqca.so
 
 #------------------------------------------------------------------------------
 %prep
 %setup -q -n %{name_orig}-%{source_ver}
-#%if %{build_debug}
-#%patch1 -p1 -b .debugpatch
-#%else
-#%patch0 -p1 -b .releasepatch
-#%endif
-#%patch2 -p1 -b .certstorepathfix
-%patch3 -p0
+%patch0 -p0
 
 %build
-cd $RPM_BUILD_DIR/%{name_orig}-%{source_ver}
-mkdir build
-cd build
-export QTDIR=/usr/lib/qt4/
-export PATH=$QTDIR/bin:$PATH
-cmake -DCMAKE_INSTALL_PREFIX=$QTDIR  \
-%if "%{_lib}" != "lib"
-      	-DLIB_SUFFIX=64 \
-%endif
-	../
+%cmake_qt4 \
+	-DCMAKE_INSTALL_PREFIX=$QTDIR 
 
 %make
 
 
 %install
 rm -rf %{buildroot}
-cd $RPM_BUILD_DIR/%{name_orig}-%{source_ver}
 cd build
 
 make DESTDIR=%buildroot install
@@ -174,17 +139,11 @@ install -d -m 755 %{buildroot}/%{qtcryptodir}
 
 # Move pkgconfig files to right place
 install -d -m 755 %{buildroot}/%{_libdir}
-mv %{buildroot}/%{qtdir}/%_lib/pkgconfig %{buildroot}/%{_libdir}/
+mv %{buildroot}/%{qt4dir}/%_lib/pkgconfig %{buildroot}/%{_libdir}/
 
-# Make symlink in /usr/bin to qcatool
+# qcatool on bindir until qt4 is main env
 install -d -m 755 %{buildroot}/%{_bindir}
-ln -s %{qtdir}/bin/qcatool %{buildroot}/%{_bindir}/qca2tool
-
-%if %{build_debug} && %{?_enable_debug_packages:0}%{!?_enable_debug_packages:1}
-# Tell spec-helper not to stip files.
-export DONT_STRIP=1
-%endif
-
+ln -s %{qt4dir}/bin/qcatool %{buildroot}/%{_bindir}/qcatool
 
 %clean
 rm -rf %buildroot

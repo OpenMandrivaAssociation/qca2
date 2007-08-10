@@ -1,21 +1,18 @@
-%define build_debug 1
+%define build_debug 0
 %{?_with_debug: %{expand: %%global build_debug 1}}
 
 %define build_sys_rootcerts 1
 %{?_without_sys_rootcerts: %{expand: %%global build_sys_rootcerts 0}}
-
-%define branch_date 20070424
 
 %define name_orig	qca
 %define qtcryptodir	%{qt4plugins}/crypto
 %define lib_major	2
 %define lib_name	%mklibname %{name_orig} %{lib_major}
 %define source_ver	%{version}-beta7
-%define build_pkcs11    0
 
 Name: qca2
 Version: 2.0.0
-Release: %mkrel 0.beta7.2
+Release: %mkrel 0.beta7.3
 License: LGPL
 Summary: Straightforward and cross-platform crypto API for Qt
 Group: System/Libraries

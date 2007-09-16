@@ -12,7 +12,7 @@
 
 Name: qca2
 Version: 2.0.0
-Release: %mkrel 0.beta7.3
+Release: %mkrel 0.beta7.4
 License: LGPL
 Summary: Straightforward and cross-platform crypto API for Qt
 Group: System/Libraries
@@ -110,6 +110,7 @@ Development files for QCA.
 %files	-n %{lib_name}-devel
 %defattr(0644,root,root,0755)
 %{_libdir}/pkgconfig/qca.pc
+%{_libdir}/pkgconfig/qca2.pc
 %{qt4dir}/mkspecs/features/crypto.prf
 %dir %{qt4include}/QtCrypto
 %{qt4include}/QtCrypto/*
@@ -140,6 +141,7 @@ install -d -m 755 %{buildroot}/%{qtcryptodir}
 # Move pkgconfig files to right place
 install -d -m 755 %{buildroot}/%{_libdir}
 mv %{buildroot}/%{qt4dir}/%_lib/pkgconfig %{buildroot}/%{_libdir}/
+ln -s qca.pc %{buildroot}%{_libdir}/pkgconfig/qca2.pc
 
 # qcatool on bindir until qt4 is main env
 install -d -m 755 %{buildroot}/%{_bindir}

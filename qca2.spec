@@ -8,18 +8,17 @@
 %define qtcryptodir	%{qt4plugins}/crypto
 %define lib_major	2
 %define lib_name	%mklibname %{name_orig} %{lib_major}
-%define source_ver	%{version}-beta7
+%define source_ver	%{version}
 
 Name: qca2
 Version: 2.0.0
-Release: %mkrel 0.beta7.4
+Release: %mkrel 1
 License: LGPL
 Summary: Straightforward and cross-platform crypto API for Qt
 Group: System/Libraries
 URL: http://delta.affinix.com/qca
 Source0: http://delta.affinix.com/download/qca/%{version}/beta7/%{name_orig}-%{source_ver}.tar.bz2
 Patch0:	%{name_orig}-2.0.0-beta6-fixbuild.patch
-Patch1: qca-2.0.0-prf.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires: qt4-devel >= 2:4.2
 %if %{build_sys_rootcerts}
@@ -47,7 +46,7 @@ regulation.
 %defattr(0644,root,root,0755)
 %doc README COPYING INSTALL TODO
 %defattr(0755,root,root,0755)
-%{qt4dir}/bin/qcatool
+%{qt4dir}/bin/qcatool2
 %_bindir/qcatool
 
 #------------------------------------------------------------------------------
@@ -120,7 +119,6 @@ Development files for QCA.
 %prep
 %setup -q -n %{name_orig}-%{source_ver}
 %patch0 -p0
-%patch1 -p1
 
 %build
 %cmake_qt4 \

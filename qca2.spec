@@ -19,7 +19,6 @@ Group: System/Libraries
 URL: http://delta.affinix.com/qca
 Source0: http://delta.affinix.com/download/qca/%{version}/beta7/%{name_orig}-%{source_ver}.tar.bz2
 Patch0:	%{name_orig}-2.0.0-beta6-fixbuild.patch
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires: qt4-devel >= 2:4.2
 %if %{build_sys_rootcerts}
 BuildRequires: rootcerts

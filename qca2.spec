@@ -12,7 +12,7 @@
 
 Name: qca2
 Version: 2.0.1
-Release: %mkrel 1
+Release: %mkrel 2
 License: LGPL
 Summary: Straightforward and cross-platform crypto API for Qt
 Group: System/Libraries
@@ -103,6 +103,7 @@ Summary:	Development files for QCA
 Group:		Development/KDE and Qt
 Requires:	%{lib_name} = %{version}-%{release}
 Provides:	%{name}-devel = %{version}-%{release}
+Conflicts:	%{mklibname -d qca 1} >= 1.0-13
 
 %description	-n %{lib_name}-devel
 Development files for QCA.

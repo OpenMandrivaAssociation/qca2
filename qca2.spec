@@ -12,7 +12,7 @@
 
 Name: qca2
 Version: 2.0.1
-Release: %mkrel 2
+Release: %mkrel 3
 License: LGPL
 Summary: Straightforward and cross-platform crypto API for Qt
 Group: System/Libraries

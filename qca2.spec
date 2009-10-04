@@ -1,5 +1,3 @@
-%define _disable_ld_no_undefined 1 
-
 %define build_sys_rootcerts 1
 %{?_without_sys_rootcerts: %{expand: %%global build_sys_rootcerts 0}}
 
@@ -11,13 +9,14 @@
 
 Name: qca2
 Version: 2.0.2
-Release: %mkrel 2
+Release: %mkrel 3
 License: LGPL
 Summary: Straightforward and cross-platform crypto API for Qt
 Group: System/Libraries
 URL: http://delta.affinix.com/qca
 # From kde support module
 Source: %{name_orig}-%{source_ver}.tar.bz2
+Patch0: qca-2.0.2-fix-linkage.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires: qt4-devel >= 2:4.5
 %if %{build_sys_rootcerts}
@@ -27,6 +26,7 @@ BuildRequires: cmake
 BuildRequires: libgcrypt-devel
 BuildRequires: libsasl-devel
 BuildRequires: nss-devel
+Obsoletes: qca >= 2.0
 
 %description
 The QCA library provides an easy API for a range of cryptographic
@@ -276,6 +276,7 @@ utilize the Qt Cryptographic Architecture (QCA).
 
 %prep
 %setup -q -n %{name_orig}-%{source_ver}
+%patch0 -p0
 
 %build
 %cmake_qt4 \

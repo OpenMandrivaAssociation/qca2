@@ -9,13 +9,13 @@
 
 Name: qca2
 Version: 2.0.2
-Release: %mkrel 6
+Release: %mkrel 6.1081513.1
 License: LGPL
 Summary: Straightforward and cross-platform crypto API for Qt
 Group: System/Libraries
 URL: http://delta.affinix.com/qca
 # From kde support module
-Source: %{name_orig}-%{source_ver}.tar.bz2
+Source: %{name_orig}-%{source_ver}.tar.xz
 Patch0: qca-2.0.2-fix-linkage.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires: qt4-devel >= 2:4.5

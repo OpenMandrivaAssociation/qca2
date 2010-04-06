@@ -17,6 +17,8 @@ URL: http://delta.affinix.com/qca
 # From kde support module
 Source: %{name_orig}-%{source_ver}.tar.xz
 Patch0: qca-2.0.2-fix-linkage.patch
+# openssl starting with 1.0.0 does not enables md2 by default nor considers it safe to be enabled
+Patch1: qca-2.0.2-disable-md2.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires: qt4-devel >= 2:4.5
 %if %{build_sys_rootcerts}
@@ -277,6 +279,7 @@ utilize the Qt Cryptographic Architecture (QCA).
 %prep
 %setup -q -n %{name_orig}-%{source_ver}
 %patch0 -p0
+%patch1 -p1
 
 %build
 %cmake_qt4 \

@@ -5,27 +5,25 @@
 %define qtcryptodir	%{qt4plugins}/crypto
 %define lib_major	2
 %define lib_name	%mklibname %{name_orig} %{lib_major}
-%define source_ver	%{version}
 
-Name: qca2
-Version: 2.0.2
-Release: %mkrel 6.1111917.4
-License: LGPL
-Summary: Straightforward and cross-platform crypto API for Qt
-Group: System/Libraries
-URL: http://delta.affinix.com/qca
+Name:		qca2
+Version:		2.0.2
+Release:		1
+License:		LGPL
+Summary:		Straightforward and cross-platform crypto API for Qt
+Group:		System/Libraries
+URL:		http://delta.affinix.com/qca
 # From kde support module
-Source: %{name_orig}-%{source_ver}.tar.xz
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-buildroot
-BuildRequires: qt4-devel >= 2:4.5
+Source0:		%{name_orig}-%{version}.tar.xz
+BuildRequires:	qt4-devel >= 2:4.5
 %if %{build_sys_rootcerts}
-BuildRequires: rootcerts
+BuildRequires:	rootcerts
 %endif
-BuildRequires: cmake
-BuildRequires: libgcrypt-devel
-BuildRequires: libsasl-devel
-BuildRequires: nss-devel
-Obsoletes: qca >= 2.0
+BuildRequires:	cmake
+BuildRequires:	libgcrypt-devel
+BuildRequires:	libsasl-devel
+BuildRequires:	nss-devel
+Obsoletes:	qca >= 2.0
 
 %description
 The QCA library provides an easy API for a range of cryptographic
@@ -40,11 +38,10 @@ plugins, applications are free of legal issues, such as export
 regulation.
 
 %files
-%defattr(0644,root,root,0755)
 %doc README COPYING INSTALL TODO
+%_mandir/man1/*
 %defattr(0755,root,root,0755)
 %{qt4dir}/bin/qcatool2
-%_mandir/man1/*
 
 #------------------------------------------------------------------------------
 
@@ -59,7 +56,6 @@ Provides root Certificate Authority certificates for the QCA library.
 These certificates are the same ones that are included in Mozilla.
 
 %files -n %{name}-root-certificates
-%defattr(0644,root,root,0755)
 %dir %{qt4dir}/share/qca
 %dir %{qt4dir}/share/qca/certs
 %doc %{qt4dir}/share/qca/certs/README
@@ -80,11 +76,10 @@ Requires: %{name}-root-certificates >= %{version}
 Obsoletes: %{mklibname qca 2 -d -s}
 Obsoletes: %{mklibname qca 2 -s}
 
-%description	-n %{lib_name}
+%description -n %{lib_name}
 Libraries for QCA.
 
 %files -n %{lib_name}
-%defattr(0644,root,root,0755)
 %doc README COPYING INSTALL TODO
 %dir %{qtcryptodir}
 %defattr(0755,root,root,0755)
@@ -107,7 +102,6 @@ Obsoletes: %{mklibname qca 2 -s}
 Development files for QCA.
 
 %files -n %{libdev}
-%defattr(0644,root,root,0755)
 %{_libdir}/pkgconfig/qca2.pc
 %{qt4dir}/mkspecs/features/crypto.prf
 %dir %{qt4include}/QtCrypto
@@ -130,7 +124,6 @@ This is a plugin to provide GnuPG capability to programs that
 utilize the Qt Cryptographic Architecture (QCA).
 
 %files plugin-gnupg
-%defattr(0644,root,root,0755)
 %attr(0755,root,root) %{qt4plugins}/crypto/libqca-gnupg.*
 
 #------------------------------------------------------------------------------
@@ -151,7 +144,6 @@ This is a plugin to provide OpenSSL capability to programs that
 utilize the Qt Cryptographic Architecture (QCA).
 
 %files plugin-openssl
-%defattr(0644,root,root,0755)
 %attr(0755,root,root) %{qt4plugins}/crypto/libqca-ossl.*
 
 #------------------------------------------------------------------------------
@@ -172,7 +164,6 @@ This is a plugin to provide PKCS11 capability to programs that
 utilize the Qt Cryptographic Architecture (QCA).
 
 %files plugin-pkcs11
-%defattr(0644,root,root,0755)
 %attr(0755,root,root) %{qt4plugins}/crypto/libqca-pkcs11.*
 
 #------------------------------------------------------------------------------
@@ -192,7 +183,6 @@ This is a plugin to provide cyrus-sasl capability to programs that
 utilize the Qt Cryptographic Architecture (QCA).
 
 %files plugin-cyrus-sasl
-%defattr(0644,root,root,0755)
 %attr(0755,root,root) %{qt4plugins}/crypto/libqca-cyrus-sasl.*
 
 #------------------------------------------------------------------------------
@@ -211,7 +201,6 @@ This is a plugin to provide logger capability to programs that
 utilize the Qt Cryptographic Architecture (QCA).
 
 %files plugin-logger
-%defattr(0644,root,root,0755)
 %attr(0755,root,root) %{qt4plugins}/crypto/libqca-logger.*
 
 #------------------------------------------------------------------------------
@@ -230,7 +219,6 @@ This is a plugin to provide gcrypt capability to programs that
 utilize the Qt Cryptographic Architecture (QCA).
 
 %files plugin-gcrypt
-%defattr(0644,root,root,0755)
 %attr(0755,root,root) %{qt4plugins}/crypto/libqca-gcrypt.*
 
 #------------------------------------------------------------------------------
@@ -249,7 +237,6 @@ This is a plugin to provide nss capability to programs that
 utilize the Qt Cryptographic Architecture (QCA).
 
 %files plugin-nss
-%defattr(0644,root,root,0755)
 %attr(0755,root,root) %{qt4plugins}/crypto/libqca-nss.*
 
 #------------------------------------------------------------------------------
@@ -268,19 +255,18 @@ This is a plugin to provide softstore capability to programs that
 utilize the Qt Cryptographic Architecture (QCA).
 
 %files plugin-softstore
-%defattr(0644,root,root,0755)
 %attr(0755,root,root) %{qt4plugins}/crypto/libqca-softstore.*
 
 #------------------------------------------------------------------------------
 
 %prep
-%setup -q -n %{name_orig}-%{source_ver}
+%setup -q -n %{name_orig}-%{version}
 
 %build
 %cmake_qt4 \
 	-DCMAKE_INSTALL_PREFIX=%{qt4dir} \
-	-DLIB_INSTALL_DIR=%_libdir \
-	-DPKGCONFIG_INSTALL_PREFIX=%_libdir/pkgconfig
+	-DLIB_INSTALL_DIR=%{_libdir} \
+	-DPKGCONFIG_INSTALL_PREFIX=%{_libdir}/pkgconfig
 %make
 
 
@@ -293,6 +279,3 @@ install -d -m 755 %{buildroot}/%{qtcryptodir}
 
 mkdir -p %{buildroot}%{_mandir}
 mv %{buildroot}%qt4dir/share/man/man1 %{buildroot}%{_mandir}
-
-%clean
-rm -rf %buildroot

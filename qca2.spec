@@ -24,7 +24,6 @@ BuildRequires:	libgcrypt-devel
 BuildRequires:	libsasl-devel
 BuildRequires:	nss-devel
 Obsoletes:	qca >= 2.0
-Requires:	%{lib_name} = %{version}-%{release}
 
 %description
 The QCA library provides an easy API for a range of cryptographic

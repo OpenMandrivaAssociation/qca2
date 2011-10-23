@@ -7,7 +7,7 @@
 %define lib_name	%mklibname %{name_orig} %{lib_major}
 
 Name:		qca2
-Version:		2.0.2
+Version:		2.0.3
 Release:		1
 License:		LGPL
 Summary:		Straightforward and cross-platform crypto API for Qt

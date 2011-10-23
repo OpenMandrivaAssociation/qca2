@@ -14,7 +14,7 @@ Summary:		Straightforward and cross-platform crypto API for Qt
 Group:		System/Libraries
 URL:		http://delta.affinix.com/qca
 # From kde support module
-Source0:		%{name_orig}-%{version}.tar.bz2
+Source0:		%{name_orig}-%{version}.tar.xz
 BuildRequires:	qt4-devel >= 2:4.5
 %if %{build_sys_rootcerts}
 BuildRequires:	rootcerts
@@ -24,6 +24,7 @@ BuildRequires:	libgcrypt-devel
 BuildRequires:	libsasl-devel
 BuildRequires:	nss-devel
 Obsoletes:	qca >= 2.0
+Requires:	%{lib_name} = %{version}-%{release}
 
 %description
 The QCA library provides an easy API for a range of cryptographic
@@ -80,10 +81,9 @@ Obsoletes: %{mklibname qca 2 -s}
 Libraries for QCA.
 
 %files -n %{lib_name}
-%doc README COPYING INSTALL TODO
 %dir %{qtcryptodir}
 %defattr(0755,root,root,0755)
-%{qt4lib}/libqca.so.*
+%{qt4lib}/libqca.so.%{lib_major}*
 
 #------------------------------------------------------------------------------
 

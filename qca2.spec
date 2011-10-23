@@ -14,7 +14,7 @@ Summary:		Straightforward and cross-platform crypto API for Qt
 Group:		System/Libraries
 URL:		http://delta.affinix.com/qca
 # From kde support module
-Source0:		%{name_orig}-%{version}.tar.xz
+Source0:		%{name_orig}-%{version}.tar.bz2
 BuildRequires:	qt4-devel >= 2:4.5
 %if %{build_sys_rootcerts}
 BuildRequires:	rootcerts

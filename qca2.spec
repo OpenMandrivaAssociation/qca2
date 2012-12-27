@@ -16,6 +16,7 @@ URL:		http://delta.affinix.com/qca
 # From kde support module
 Source0:	%{name_orig}-%{version}.tar.xz
 Patch0:		qca-2.0.3-gcc.patch
+Patch1:		qca-botan-1.10.patch
 BuildRequires:	qt4-devel >= 2:4.5
 %if %{build_sys_rootcerts}
 BuildRequires:	rootcerts
@@ -200,7 +201,7 @@ utilize the Qt Cryptographic Architecture (QCA).
 #------------------------------------------------------------------------------
 
 %package plugin-gcrypt
-Summary:	Logger plugin for QCA
+Summary:	GCrypt plugin for QCA
 Group:		Development/KDE and Qt
 Provides:	qca2-gcrypt = %{version}-%{release}
 Provides:	qca2-plugin-gcrypt-%{_lib} = %{version}-%{release}
@@ -250,15 +251,32 @@ utilize the Qt Cryptographic Architecture (QCA).
 
 #------------------------------------------------------------------------------
 
+%package plugin-botan
+Summary:	Botan plugin for QCA
+Group:		Development/KDE and Qt
+Provides:	qca2-botan = %{version}-%{release}
+Provides:	%{lib_name}-plugin-botan = %{version}-%{release}
+
+%description plugin-botan
+This is a plugin to allow the Qt Cryptographic Architecture (QCA) to
+use the Botan cryptography library as its backend.
+
+%files plugin-botan
+%attr(0755,root,root) %{qt4plugins}/crypto/libqca-botan.*
+
+#------------------------------------------------------------------------------
+
 %prep
 %setup -q -n %{name_orig}-%{version}
 %patch0 -p1
+%patch1 -p1 -b .botan-1.10~
 
 %build
 %cmake_qt4 \
 	-DCMAKE_INSTALL_PREFIX=%{qt4dir} \
 	-DLIB_INSTALL_DIR=%{_libdir} \
-	-DPKGCONFIG_INSTALL_PREFIX=%{_libdir}/pkgconfig
+	-DPKGCONFIG_INSTALL_PREFIX=%{_libdir}/pkgconfig \
+	-DBOTANCONFIG_EXECUTABLE=%_bindir/botan-config-1.10
 %make
 
 

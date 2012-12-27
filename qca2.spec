@@ -256,6 +256,7 @@ Summary:	Botan plugin for QCA
 Group:		Development/KDE and Qt
 Provides:	qca2-botan = %{version}-%{release}
 Provides:	%{lib_name}-plugin-botan = %{version}-%{release}
+BuildRequires:	pkgconfig(botan-1.10)
 
 %description plugin-botan
 This is a plugin to allow the Qt Cryptographic Architecture (QCA) to

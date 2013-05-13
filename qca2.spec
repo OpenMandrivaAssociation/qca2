@@ -22,8 +22,8 @@ BuildRequires:	qt4-devel >= 2:4.5
 BuildRequires:	rootcerts
 %endif
 BuildRequires:	cmake
-BuildRequires:	libgcrypt-devel
-BuildRequires:	libsasl-devel
+BuildRequires:	pkgconfig(libgcrypt)
+BuildRequires:	sasl-devel = 2.1.25
 BuildRequires:	pkgconfig(nss)
 Obsoletes:	qca >= 2.0
 Requires:	%{lib_name} = %{version}-%{release}

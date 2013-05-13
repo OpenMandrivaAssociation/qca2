@@ -8,7 +8,7 @@
 
 Name:		qca2
 Version:	2.0.3
-Release:	2
+Release:	3
 License:	LGPL
 Summary:	Straightforward and cross-platform crypto API for Qt
 Group:		System/Libraries

@@ -168,7 +168,7 @@ utilize the Qt Cryptographic Architecture (QCA).
 %package plugin-cyrus-sasl
 Summary:	Cyrus-sasl plugin for QCA
 Group:		Development/KDE and Qt
-BuildRequires:	libsasl2-devel
+BuildRequires:	sasl-devel
 Provides:	qca2-sasl = %{version}-%{release}
 Provides:	qca2-plugin-cyrus-sasl-%{_lib} = %{version}-%{release}
 Obsoletes:	qca2-plugin-cyrus-sasl-%{_lib} < 2.0.0-5

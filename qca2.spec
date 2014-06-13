@@ -11,7 +11,7 @@
 Summary:	Straightforward and cross-platform crypto API for Qt
 Name:		qca2
 Version:	2.0.3
-Release:	7
+Release:	8
 License:	LGPLv2
 Group:		System/Libraries
 Url:		http://delta.affinix.com/qca
